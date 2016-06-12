@@ -1,0 +1,15 @@
+<html>
+<body>
+	<h3>Hi ${user.name},</h3>
+	<p>
+		欢迎搭乘别人家倩女的数据巨轮。放心，我们的巨轮永不会沉，2333333！<br /> 
+		访问<a href="http://brjia.cn/qs/index">主页</a>
+	</p>
+	<p>
+		点击<a href="http://brjia.cn/qs/profile/${user.userId}">这里</a>订阅联赛数据，精彩不再错过
+	</p>
+	<div>
+		Your email address is <a href="mailto:${user.email}">${user.email}</a>.
+	</div>
+</body>
+</html>

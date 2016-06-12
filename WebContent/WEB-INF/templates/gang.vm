@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<style>
+.brjia-chip{
+	margin:5px 0px 0px;
+	background-color:#b2dfdb
+}
+.upload-table >tbody> tr:hover{
+	background-color:#b2dfdb;
+}
+/* #more-intro .button-list{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+} */
+</style>
+
+#parse("partial/header.vm")
+
+<body>
+
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	<div class="title-info valign-wrapper hoverable">
+		<h5 class="abstr center-align">第${smeta.week}周(${smeta.dateb}) 第${smeta.round}场战况
+			#if(!${smeta.eid})
+			<span class="subtext badge pink lighten-5">暂无对手数据</span>
+			#end
+		</h5>
+		<span class="abstr">${smeta.year}年 别人家倩女</span>
+		#if(${smeta.sid})
+		<input type="hidden" id="summary_id_text" value="$!{smeta.sid}">
+		#end
+		#if(${smeta.eid})
+		<input type="hidden" id="enemy_id_text" value="$!{smeta.eid}">
+		#end
+	</div>
+	<section id="bang-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m12">
+					<div id="chart-vs" class="chart"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="hero-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m3 ">
+					<div class="hero-info">
+						<h6>我方英雄</h6>
+					</div>
+					<div class="hero-info">
+						<h6>敌对英雄</h6>
+					</div>
+				</div>
+				<div class="col s12 m9">
+					<div id="chart-hero" class="chart"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="player-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+					<div id="chart-player" class="chart"></div>
+				</div>
+				<div class="col s12 m2">
+					<form action="#">
+						<p>
+							<input name="group1" type="radio" id="test1" checked="checked" />
+							<label for="test1">攻击分布</label>
+						</p>
+						<p>
+							<input name="group1" type="radio" id="test2" /> <label
+								for="test2">辅助分布</label>
+						</p>
+
+					</form>
+					<div class="index-info"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="more-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m2">
+					<div class="button-list">
+						<a class="waves-effect waves-light btn z-depth-3" href="${root}/upload">上传</a>
+					</div>
+					<div class="index-info">点击线上的小圆点，可查看当期数据哦</div>
+				</div>
+				<div class="col s12 m10">
+					<div id="chart-upload" class="chart"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- <section id="more2-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h6>近期收录的还有这些</h6>
+					<p class="index-info"></p>
+					<div class="datasource-container">
+							<table class="upload-table centered responsive-table">
+						        <thead>
+						          <tr>
+						              <th data-field="name">战斗期次</th>
+						              <th data-field="area">联赛时间</th>
+						              <th data-field="area">敌对帮会</th>
+						              <th data-field="author">上传者</th>
+						              <th data-field="impetus">声势值</th>
+						          </tr>
+						        </thead>
+						        <tbody>
+						        #foreach($item in $uploads)
+						         <tr sid='$!{item.sid}' eid='$!{item.eid}'>
+						            <td >${item.year}-${item.week}-${item.round}</td>
+						            <td>${item.fightTime}</td>
+						            <td>$!{item.eid}</td>
+						            <td>$!{item.uploadUserName}</td>
+						            <td>${item.impetus}</td>
+						          </tr>
+						          #end
+						        </tbody>
+						      </table>
+						      #if(!$uploads)
+						      暂无
+						      #end
+					</div>
+
+					<div class="button-list">
+						<a class="waves-effect waves-light btn z-depth-3" href="${root}/upload">上传</a>
+						<a class="waves-effect waves-light btn z-depth-3 hide">查看</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section> -->
+
+	</main>
+
+	#parse("partial/footer.vm") 
+	
+	<script type="text/javascript" src="${root}/js/echarts-template.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		
+		var vs = echarts.init(document.getElementById('chart-vs'), "macarons");
+		var hero = echarts.init(document.getElementById('chart-hero'),"macarons");
+		var player = echarts.init(document.getElementById('chart-player'),"macarons");
+		var upload = echarts.init(document.getElementById('chart-upload'),"macarons");
+		
+		var sid=$(".title-info input").eq(0).val();
+		var eid=$(".title-info input").eq(1).val();
+		setData(sid,eid,vs,hero,player,upload);
+		
+	});
+	function appendHeroTo(heros, parent) {
+		for (h in heros) {
+			$('<div class="chip brjia-chip teal lighten-4"></div>').text(heros[h])
+					.appendTo(parent);
+		}
+	}
+	function setSingleData(primary,success,vs){
+		var names =[primary.gangName];
+		vs_options.title.text=names.join(" vs 尚无匹配");
+		vs_options.legend.data=names;
+		var data=[];
+		data.push({name:names[0],value:summaryToArray(primary)});
+		vs_options.series[0].data=data;
+		var maxArray = accumlateInt(data[0].value,0.1);
+		vs_options.radar[0].indicator[0].max=maxArray[0];
+		vs_options.radar[0].indicator[1].max=maxArray[1];
+		vs_options.radar[0].indicator[2].max=maxArray[2];
+		vs_options.radar[0].indicator[3].max=maxArray[3];
+		vs_options.radar[0].indicator[4].max=maxArray[4];
+		vs_options.radar[0].indicator[5].max=maxArray[5];
+		
+		var data=[];
+		data.push({name:names[0],value:summaryBackToArray(primary)});
+		vs_options.series[1].data=data;
+		var maxArray = accumlateInt(data[0].value,0.2);
+		vs_options.radar[1].indicator[0].max=maxArray[0];
+		vs_options.radar[1].indicator[1].max=maxArray[1];
+		vs_options.radar[1].indicator[2].max=maxArray[2];
+		vs_options.radar[1].indicator[3].max=maxArray[3];
+		
+		vs.setOption(vs_options);
+		
+		success(primary);
+	}
+	function setSummary(sid,eid,success,singleSuccess,vs){
+		$.getJSON("/qs/round/summary/"+sid,{eid:eid},function(res){
+			vs.hideLoading();
+			if(res.msg){
+				Materialize.toast(res.msg, 4000);
+				return;
+			}
+			if(!res.data.primary){
+				Materialize.toast("有点糟糕了", 4000);
+				return;
+			}
+			
+			if(!res.data.enemy){
+				setSingleData(res.data.primary,singleSuccess,vs);
+				return;
+			}
+			var names =[res.data.primary.gangName,res.data.enemy.gangName];
+			vs_options.title.text=names.join(" vs ");
+			vs_options.legend.data=names;
+			var data=[];
+			data.push({name:names[0],value:summaryToArray(res.data.primary)});
+			data.push({name:names[1],value:summaryToArray(res.data.enemy)});
+			vs_options.series[0].data=data;
+			var maxArray = accumlateInt(maxInArrays(data[0].value,data[1].value),0.1);
+			vs_options.radar[0].indicator[0].max=maxArray[0];
+			vs_options.radar[0].indicator[1].max=maxArray[1];
+			vs_options.radar[0].indicator[2].max=maxArray[2];
+			vs_options.radar[0].indicator[3].max=maxArray[3];
+			vs_options.radar[0].indicator[4].max=maxArray[4];
+			vs_options.radar[0].indicator[5].max=maxArray[5];
+			
+			var data=[];
+			data.push({name:names[0],value:summaryBackToArray(res.data.primary)});
+			data.push({name:names[1],value:summaryBackToArray(res.data.enemy)});
+			vs_options.series[1].data=data;
+			var maxArray = accumlateInt(maxInArrays(data[0].value,data[1].value),0.2);
+			vs_options.radar[1].indicator[0].max=maxArray[0];
+			vs_options.radar[1].indicator[1].max=maxArray[1];
+			vs_options.radar[1].indicator[2].max=maxArray[2];
+			vs_options.radar[1].indicator[3].max=maxArray[3];
+			
+			vs.setOption(vs_options);
+			
+			success(res.data.primary,res.data.enemy);
+		});
+		
+		
+	}	
+	function setHeroRatio(hero,primary,enemy){
+		var names =[primary.gangName];
+		var id = primary.id;
+		if(!enemy){
+			$.getJSON("/qs/round/hero",{sid:id},function(hero_res){
+				hero.hideLoading();
+				if(hero_res.msg){
+					Materialize.toast(hero_res.msg, 4000);
+					return;
+				}
+				
+				hreo_options.legend.data=names;
+				var series = hreo_options.series[0];
+				series.data=heroToArray(hero_res.data.primary,primary);
+				series.name=names[0];
+				hreo_options.series=series;
+				hero.setOption(hreo_options);
+				appendHeroTo(hero_res.data.primary.hero,"#hero-intro .hero-info:first");
+			});
+			return;
+		}
+		names.push(enemy.gangName);
+		var enemyId = enemy.id;
+		$.getJSON("/qs/round/hero",{sid:id,eid:enemyId},function(hero_res){
+			hero.hideLoading();
+			if(hero_res.msg){
+				Materialize.toast(hero_res.msg, 4000);
+				return;
+			}
+			
+			hreo_options.legend.data=names;
+			hreo_options.series[0].data=heroToArray(hero_res.data.primary,primary);
+			hreo_options.series[1].data=heroToArray(hero_res.data.enemy,enemy);
+			hreo_options.series[0].name=names[0];
+			hreo_options.series[1].name=names[1];
+			hero.setOption(hreo_options);
+			appendHeroTo(hero_res.data.primary.hero,"#hero-intro .hero-info:first");
+			appendHeroTo(hero_res.data.enemy.hero,"#hero-intro .hero-info:last");
+		});
+	}
+	function setMemberList(player,primary,enemy){
+
+		$("#player-intro input").click(function() {
+			if($(this).is("#player-intro input:first")){
+				
+				player.setOption(output_options,true);
+				$("#player-intro .index-info").text("图中气泡越大，代表杀敌人数越多");
+			}else{
+				
+				player.setOption(assist_options,true);
+				$("#player-intro .index-info").text("图中气泡越大，代表治疗量越高");
+			}
+			/* if ($('#player-intro input:first')[0].checked) {
+			} else {
+			} */
+		});
+		var names =[primary.gangName];
+		var id = primary.id;
+		if(!enemy){
+			$.getJSON("/qs/round/listdata",{sid:id},function(list_res){
+				player.hideLoading();
+				if(list_res.msg){
+					Materialize.toast(list_res.msg, 4000);
+					return;
+				}
+				//output
+				var ready1=memberDataArray(list_res.data.primary);
+				output_options.legend.data=names;
+				output_options.visualMap[0].max=ready1.max_killQ+1;
+				output_options.series[0].data=ready1.data;
+				output_options.series[0].name=names[0];
+				
+				output_options.series=output_options.series[0];
+				player.setOption(output_options);
+				
+				//assist
+				var ready1=memberAssistDataArray(list_res.data.primary);
+				assist_options.visualMap[0].max=ready1.max_cureM;
+				
+				assist_options.legend.data=names;
+				assist_options.series[0].data=ready1.data;
+				assist_options.series[0].name=names[0];
+				assist_options.series=assist_options.series[0];
+				
+			});
+			return;
+		}
+		names.push(enemy.gangName);
+		var enemyId = enemy.id;
+		$.getJSON("/qs/round/listdata",{sid:id,eid:enemyId},function(list_res){
+			player.hideLoading();
+			if(list_res.msg){
+				Materialize.toast(list_res.msg, 4000);
+				return;
+			}
+			//output
+			var ready1=memberDataArray(list_res.data.primary);
+			var ready2=memberDataArray(list_res.data.enemy);
+			output_options.legend.data=names;
+			output_options.visualMap[0].max=Math.max(ready1.max_killQ,ready2.max_killQ)+1;
+			output_options.series[0].data=ready1.data;
+			output_options.series[1].data=ready2.data;
+			output_options.series[0].name=names[0];
+			output_options.series[1].name=names[1];
+			player.setOption(output_options);
+			
+			//assist
+			var ready1=memberAssistDataArray(list_res.data.primary);
+			var ready2=memberAssistDataArray(list_res.data.enemy);
+			assist_options.visualMap[0].max=Math.max(ready1.max_cureM,ready2.max_cureM);
+			
+			assist_options.legend.data=names;
+			assist_options.series[0].data=ready1.data;
+			assist_options.series[1].data=ready2.data;
+			assist_options.series[0].name=names[0];
+			assist_options.series[1].name=names[1];
+			
+		});
+	}
+	function setData(sid,eid,vs,hero,player,upload){
+		vs.showLoading();
+		hero.showLoading();
+		player.showLoading();
+		var success=function(primary,enemy){
+			setMemberList(player,primary,enemy);
+			setHeroRatio(hero,primary,enemy);
+			setUploadChart(primary.gangId,upload);
+		}
+		var singleSucess=function(primary){
+			setMemberList(player,primary);
+			setHeroRatio(hero,primary);
+			setUploadChart(primary.gangId,upload);
+		}
+		setSummary(sid,eid,success,singleSucess,vs);
+		
+	}
+	function setUploadChart(gangId,upload){
+		var resetDatas=function(resData){
+			for(item in resData){
+				resData[item].ywr=resData[item].year+"-"+resData[item].week+"-"+resData[item].round;
+			}
+		}
+		var findXaxis=function(obj){
+			var res = [];
+			for(item in obj){
+				res.push(obj[item].ywr);
+			}
+			return res;
+		}
+		$.getJSON("/qs/gang/upload",{gangId:gangId},function(res){
+			upload.hideLoading();
+			
+			if(res.msg){
+				$("#more-intro .index-info").text(res.msg);
+				/* Materialize.toast(res.msg, 4000); */
+				upload_option.series[0].data=[];
+				upload.setOption(upload_option);
+				return;
+			}
+			
+			resetDatas(res.data);
+			upload_option.series[0].data=res.data;
+			upload_option.xAxis.data=findXaxis(res.data);
+			upload.setOption(upload_option);
+			
+			upload.on('click', function (parmas) {
+				var baseUrl="/qs/gang/"+gangId+"/"+parmas.data.sid;
+				if(parmas.data.eid){
+					
+				window.location.href=baseUrl+"?enemyId="+parmas.data.eid;
+				}else{
+					window.location.href=baseUrl
+				}
+				
+			});
+			
+		});
+		
+	}
+	</script>
+</body>
+
+</html>

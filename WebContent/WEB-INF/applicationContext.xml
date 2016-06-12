@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans-4.1.xsd    
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context-4.1.xsd    
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx-4.1.xsd    
+            http://www.springframework.org/schema/util 
+            http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+	<!-- 包含了context:annotation-config -->
+	<context:component-scan base-package="org.brjia.qs">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>/WEB-INF/password.properties</value>
+        </property>
+        <property name="fileEncoding" value="utf-8" />
+    </bean>
+    
+	<bean id="testService" class="org.brjia.qs.service.TestService">
+		<property name="testMapper" ref="testMapper" />
+	</bean>
+	<!-- mybatis3配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/qs?characterEncoding=utf8" />
+		<property name="username" value="${mysql.user}" />
+		<property name="password" value="${mysql.pw}" />
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager" />
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.brjia.qs.mapper" />
+	</bean>
+	<!-- mail -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${email.host}" />
+		<property name="username" value="${email.user}" />
+		<property name="password" value="${email.pw}" />
+
+	</bean>
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="/WEB-INF/templates/" />
+	</bean>
+	<!-- <bean id="testMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
+		<property name="mapperInterface" value="org.brjia.qs.mapper.TestMapper" /> 
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" /> </bean> -->
+
+	<!-- customer bean -->
+	<bean id="textParser" class="org.brjia.qs.parse.parser.TextParser"></bean>
+</beans>

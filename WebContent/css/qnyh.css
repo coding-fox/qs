@@ -1,0 +1,137 @@
+
+@keyframes pulsate
+{
+0%  {background-color:rgba(177,13,201,0.25)}
+20% {background-color:rgba(255,255,255,0.25)}
+40% {background-color:rgba(255,133,27,0.25)}
+60%  {background-color:rgba(127,219,255,0.25)}
+80%  {background-color:rgba(255,11,10,0.25)}
+100%   {background-color:rgba(177,13,201,0.25)}
+}
+
+@-moz-keyframes myfirst /* Firefox */
+{
+0%   {background: red;}
+25%  {background: yellow;}
+50%  {background: blue;}
+100% {background: green;}
+}
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+0%   {background: red;}
+25%  {background: yellow;}
+50%  {background: blue;}
+100% {background: green;}
+}
+
+@-o-keyframes myfirst /* Opera */
+{
+0%   {background: red;}
+25%  {background: yellow;}
+50%  {background: blue;}
+100% {background: green;}
+}
+/*picture div*/
+.wall{
+	background:url(../images/header-bg.jpg) no-repeat center 15%;
+
+}
+.navbar nav{
+	background-color: rgba(177,213,201,0.25);
+	box-shadow: none;
+}
+.navbar a{
+	color:#16baaf;
+	
+}
+.brand-logo,.brand-logo > img{
+	margin-left: 2px;
+}
+/*遮罩div*/
+div#df{
+	height: 550px;
+	animation:pulsate 60s linear infinite;
+/*	background-color: rgba(144, 202, 249,0.25);*/
+}
+section {
+	margin: 0px;
+	padding: 50px 0px;
+	min-height: 450px;
+	/*background-color: transparent;*/
+}
+section div.chart{
+	height: 450px;
+}
+main .title-info{
+	height: 80px;
+	width: 99%;
+	margin: 0px auto;
+	position: relative;
+	
+}
+main .title-info .subtext{
+	font-size: 0.5em;
+	color: red;
+}
+main .title-info h5.abstr{
+	margin: auto;
+}
+main .title-info span.abstr{
+	color:rgba(177,213,201,0.95);
+	position: absolute;
+	bottom: 5px;
+	right:5px;
+	font-style: italic;
+}
+#player-intro{
+
+}
+#more-intro{
+	background-color: rgb(227, 242, 253);
+}
+#more-intro .col{
+	position: relative;
+}
+
+#hero-intro{
+	background-color: rgb(227, 242, 253)
+}
+#hero-intro .hero-info{
+	margin: 20px 0px;
+}
+
+footer.page-footer{
+	background-color: #16baaf;
+	margin: 0px;
+}
+
+#modal-login{
+	height: 350px;
+	width: 320px;
+}
+#modal-login .field-row-1{
+	margin: 15px 0px 0px 0px;
+}
+#modal-login .field-row{
+	margin: 0px 0px 0px 0px;
+}
+#modal-login #footer-div{
+	
+	 border-top-width: 0px; 
+	 padding:4px 0px;
+}
+#modal-login #footer-div .progress{
+	margin: 0px;
+}
+
+.index-info{
+	font-family: monospace;
+	font-style: italic;
+	font-weight: lighter;
+	padding: 10px;
+}
+.btn{
+	background-color:#16baaf;
+}
+

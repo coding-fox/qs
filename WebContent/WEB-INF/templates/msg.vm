@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<style>
+.brjia-chip{
+	margin:5px 0px 0px;
+	background-color:#b2dfdb
+}
+.upload-table >tbody> tr:hover{
+	background-color:#b2dfdb;
+}
+#more-intro .button-list{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+</style>
+
+#parse("partial/header.vm")
+
+<body>
+
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+				#if($msg_code==0)
+					<h5>尚未登录</h5>您可以点击导航栏登录按钮或者
+					<a href="/qs/gang">查看其它帮会</a>
+				#end
+				#if($msg_code==1)
+					<h5>尚未关联角色，无法查看帮会</h5>您可以
+					<a href="/qs/gang">查看其它帮会</a>
+					<a href="/qs/profile/${user.userId}">关联角色</a>
+				#end
+				#if($msg_code==2)
+					<h5>暂无数据</h5>您可以
+					<a href="/qs/gang">查看其它帮会</a>
+				#end
+				#if($msg_code==3)
+					<h5>尚未关联家族，无法查看家族数据</h5>您可以
+					<a href="/qs/family/list">加入家族</a>
+					<a href="#modal-create-family"
+						class="createArea waves-effect waves-light modal-trigger">新建新家族</a>
+				#end
+				#if($msg_code==4)
+					<h5>无此家族</h5>您可以
+					<a href="#modal-create-family"
+						class="createArea waves-effect waves-light modal-trigger">新建新家族</a>
+					<a href="/qs/family/list">加入家族</a>
+				#end
+				#if($msg_code==5)
+					<h5>尚无家族</h5>您可以
+					<a href="#modal-create-family"
+						class="createArea waves-effect waves-light modal-trigger">新建新家族</a>
+					<a href="/qs/family/list">加入家族</a>
+				#end
+				
+				</div>
+				
+				
+			</div>
+		</div>
+		
+		  <!-- Modal Structure不可以放在col类中，会影响 -->
+		<div id="modal-create-family" class="modal">
+			<div class="modal-content">
+			<div class="col m6 s10">
+					<P class="index-info">创建家族需要登录，且关联了游戏角色。您可以在我的设置页面进行关联操作</P>
+				</div>
+				<form>
+					<div class="input-field col m6 s10">
+						<input id="familyName" name="familyName" type="text" class="validate">
+						<label for="familyName">家族名称</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#!"
+					class=" modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+				<a href="#!"
+					class=" modal-action waves-effect waves-green btn-flat">确认</a>
+			</div>
+	</div>
+	</section>
+
+	</main>
+
+
+	#parse("partial/footer.vm") 
+	<script type="text/javascript">
+	$(function(){
+		$('section a.modal-trigger').leanModal({
+			dismissible: false,
+			opacity:0.3,
+			in_duration: 300,
+			out_duration:400
+			});
+		$("#modal-create-family a:last").on(
+				"click",
+				function(event) {
+					var familyName = $('#familyName').val();
+					if (familyName == '') {
+						$('#familyName').focus();
+						return;
+					}
+					$('#modal-create-family').closeModal();
+					$.post("/qs/family/create", {familyName:familyName}, function(data) {
+						
+						if (data.msg) {
+							Materialize.toast(data.msg, 2000)
+						} else {
+							//do request
+							window.location.href="/qs/family/list"
+						}
+
+					});
+
+				});
+	});
+	
+	</script>
+</body>
+
+</html>

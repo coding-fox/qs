@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<style>
+.brjia-chip{
+	margin:5px 0px 0px;
+	background-color:#b2dfdb
+}
+.gang-list li{
+	float:left;
+	display: inline-block;
+	margin: 10px;
+}
+</style>
+
+#parse("partial/header.vm")
+
+<body>
+
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5>目前收录服务器／帮会一览</h5>
+					<p class="index-info">这里仅显示存在帮会的服务器。</p>
+					<div class="datasource-container">
+						#if($areaGangs)
+							<div class="col s12">
+						      <ul class="tabs">
+								#foreach($areaGang in $areaGangs)
+						        <li class="tab col s3"><a href="#area-${areaGang.areaId}">${areaGang.areaName}</a></li>
+						        #end
+						      </ul>
+						    </div>
+						    #foreach($areaGang in $areaGangs)
+						    <div id="area-${areaGang.areaId}" class="col s12">
+						    	<div class="area-detail">
+						    		<ul>
+						           	 <li >$!{areaGang.createUserName}</li>
+						           	 <li >${areaGang.createTime}</li>
+						           	 <li >${areaGang.office}</li>
+						          	</ul>
+						    	</div>
+						         <ul class="gang-list">
+						        #foreach($item in $areaGang.gangs)
+						            <li><a href="${item.gangId}">${item.gangName}</a></li>
+						        #end
+						          </ul>
+					    	</div>
+						    #end
+						#end
+						#if(!$areaGangs)
+						暂无数据
+						#end
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	</main>
+
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm") 
+	
+	<script type="text/javascript">
+		
+	$(function(){
+		$("ul.gang-list li").on("click",function(event){
+			event.preventDefault();
+			var id = $(this).find("a").attr("href");
+			window.location.href="/qs/gang/"+id;
+		});
+	});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+
+	</header>
+	<main>
+	<section id="first-section">
+		<div class="container">
+			<div class="row ">
+				<div class="col s6">
+					<h5>关联角色</h5>
+					<p >您当前的角色为：<span id="role-show-p">$!{user.name}</span></p>
+					<p >当前服务器：<span id="area-show-p">$!{user.areaId}</span></p>
+				</div>
+			</div>
+			<div class="row  field-row">
+				<form class="col s12 role-form">
+					<div class="input-field col s6 ">
+						<select id="role-select" name="roleId">
+							<option value="" disabled selected>选择一项</option> 
+							#foreach( $area in $memberList )
+							<option value="${area.id}">${area.name}</option> 
+							#end
+						</select> 
+						<label>更换角色</label>
+					</div>
+					<div class="col s12">
+						<button class="btn waves-effect waves-light" type="submit"
+							name="action">
+							保存 <i class="material-icons right">send</i>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<section id="second-section">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5>关联家族</h5>
+					<p>敬请期待</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	</main>
+	#parse("partial/footer.vm")
+	<script>
+		$(document).ready(
+				function() {
+					$("#first-section .role-form").on(
+							"submit",
+							function(event) {
+								event.preventDefault();
+								var sel = $(this).find("#role-select").eq(0);
+								if (!sel.val()) {
+									Materialize.toast('请选择角色', 2000);
+									return;
+								}
+								$.post("/qs/role", {
+									roleId : sel.val()
+								}, function(data) {
+									if (data.msg) {
+										Materialize.toast(data.msg, 2000);
+									} else {
+										$("#first-section #role-show-p").html(data.data.name);
+										$("#first-section #area-show-p").html(data.data.areaId);
+										Materialize.toast("关联成功", 2000)
+									}
+
+								});
+							});
+				});
+	</script>
+</body>
+
+</html>

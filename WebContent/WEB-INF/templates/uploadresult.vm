@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	<section id="first-section">
+		<div class="container">
+			<div class="row">
+
+				<div class="col s12">
+
+					#if(${msg})
+					<h5>上传失败</h5>
+					<p>${msg}</p>
+					#end 
+					#if(!${msg})
+					<h5>上传成功</h5>
+					<p></p>
+					#end
+
+					<p>
+						<a href="${root}/upload">返回</a><a href="${root}/index">首页</a>
+					</p>
+				</div>
+			</div>
+	</section>
+
+
+	</main>
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm")
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+
+<script type="text/html" id="template-profile">
+   <a class='dropdown-button' data-href="href" data-activates='profile-drop'>
+    <i class="tiny material-icons">perm_identity</i>
+  </a>
+<!-- Dropdown Structure -->
+<ul id='profile-drop' class='dropdown-content'>
+	<li><a data-href="href" data-content-append＝"username"><i class="tiny material-icons">settings</i></a></li>
+	<li class="divider"></li>
+	<li><a class="logout" href="#!">退出</a></li>
+</ul>
+</script>
+<div class="navbar">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#!" class="brand-logo"><img src="${root}/images/logo-32.png"></img><span>别人家倩女</span></a>
+			<a href="#" data-activates="mobile-menu" class="button-collapse"><i
+				class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="${root}/index" class="active">首页</a></li>
+				<li><a href="${root}/gang">帮会</a></li>
+				<!-- <li><a href="${root}/family">家族</a></li> -->
+				<li><a href="${root}/my">我的</a></li>
+				<li id="profile-li">
+				#if($user)
+				    <a class='dropdown-button' href="${root}/profile/${user.userId}" data-activates='profile-drop'>
+					    <i class="tiny material-icons">perm_identity</i>
+					  </a>
+					<ul id='profile-drop' class='dropdown-content'>
+						<li><a href="${root}/profile/${user.userId}"><i class="tiny material-icons">settings</i>$!{user.name}</a></li>
+						<li class="divider"></li>
+						<li><a class="logout" href="#!">退出</a></li>
+					</ul>
+				#end
+				#if(!$user)
+				<a href="#modal-login" class="modal-trigger">登陆</a>
+				#end
+				</li>
+			</ul>
+			<ul class="side-nav" id="mobile-menu">
+				<li><a href="${root}/index" class="active">首页</a></li>
+				<li><a href="${root}/gang">帮会</a></li>
+				<!-- <li><a href="${root}/family">家族</a></li> -->
+				<li><a href="${root}/my">我的</a></li>
+				<li><a href="#modal-login" class="modal-trigger">登陆</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
+<!-- 登录模态框 -->
+<div id="modal-login" class="modal modal-fixed-footer">
+	<div class="row">
+		<div class="col s12">
+			<!-- <ul class="tabs">
+				<li class="tab col s2 card-panel"><a id="login-title-a" href="#login-div">登陆</a></li>
+			</ul> -->
+			<h5  class="center-align">登陆</h5>
+		</div>
+		<div id="login-div" class="col s12">
+			<form class="col s12">
+				<div class="row field-row-1">
+					<div class="input-field col s12">
+						<input name="email" id="email" type="email"
+							class="validate charcount"> <label for="email">用户邮箱</label>
+					</div>
+				</div>
+				<div class="row field-row">
+					<div class="input-field col s12">
+						<input name="pwd" id="password" type="password"
+							class="validate charcount"> <label for="password">密码</label>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+	<div id="footer-div" class="modal-footer">
+<div class="progress">
+     
+	 <div class="determinate" ></div>
+  </div>
+		<a href="#!" id="login-btn"
+			class="modal-action waves-effect waves-green btn-flat ">登录</a> <a
+			href="${root}/register" class="waves-effect waves-green btn-flat ">注册</a>
+		
+	</div>
+</div>
+
+
+

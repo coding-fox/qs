@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<style>
+.brjia-chip {
+	margin: 5px 0px 0px;
+	background-color: #b2dfdb
+}
+
+.upload-table>tbody>tr:hover {
+	background-color: #b2dfdb;
+}
+
+#more-intro .button-list {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+</style>
+
+#parse("partial/header.vm")
+
+<body>
+
+	<header>
+		<div class="wall">
+			<div id="df">#parse("partial/nav.vm")</div>
+		</div>
+	</header>
+	<main>
+	<div class="title-info valign-wrapper hoverable">
+		<h5 class="abstr center-align">
+			第${week}周(${dateb}) 第${round}场战况<span
+				class="subtext badge pink lighten-5">暂无对手数据</span>
+		</h5>
+		<span class="abstr">${year}年 别人家倩女</span>
+	</div>
+	<section id="bang-intro2">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+					<div class="slider">
+						<ul class="slides">
+							<li><img src="http://lorempixel.com/580/250/nature/1">
+								<!-- random image -->
+								<div class="caption center-align">
+									<h3>This is our big Tagline!</h3>
+									<h5 class="light grey-text text-lighten-3">Here's our
+										small slogan.</h5>
+								</div></li>
+							<li><img src="http://lorempixel.com/580/250/nature/2">
+								<!-- random image -->
+								<div class="caption left-align">
+									<h3>Left Aligned Caption</h3>
+									<h5 class="light grey-text text-lighten-3">Here's our
+										small slogan.</h5>
+								</div></li>
+							<li><img src="http://lorempixel.com/580/250/nature/3">
+								<!-- random image -->
+								<div class="caption right-align">
+									<h3>Right Aligned Caption</h3>
+									<h5 class="light grey-text text-lighten-3">Here's our
+										small slogan.</h5>
+								</div></li>
+							<li><img src="http://lorempixel.com/580/250/nature/4">
+								<!-- random image -->
+								<div class="caption center-align">
+									<h3>This is our big Tagline!</h3>
+									<h5 class="light grey-text text-lighten-3">Here's our
+										small slogan.</h5>
+								</div></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="bang-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+					<div id="chart-vs" class="chart"></div>
+				</div>
+				<div class="col s12 m2">
+					<p class="index-info">借助于雷达图，全方面呈现交战双方的各项实力，以便了解各自优势和薄弱之处</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="hero-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m3 ">
+					<div>
+						<p class="index-info">右图展示了帮会对英雄人物的依赖程度</p>
+					</div>
+					<div class="hero-info">
+						<h6>我方英雄</h6>
+					</div>
+					<div class="hero-info">
+						<h6>敌对英雄</h6>
+					</div>
+				</div>
+				<div class="col s12 m9">
+					<div id="chart-hero" class="chart"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="player-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+					<div id="chart-player" class="chart"></div>
+				</div>
+				<div class="col s12 m2">
+					<form action="#">
+						<p>
+							<input name="group1" type="radio" id="test1" checked="checked" />
+							<label for="test1">攻击分布</label>
+						</p>
+						<p>
+							<input name="group1" type="radio" id="test2" /> <label
+								for="test2">辅助分布</label>
+						</p>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="more-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5>数据来源</h5>
+					<p class="index-info">下表列出了当前场次的数据上传情况。赶紧和大家分享你们帮会的数据吧！</p>
+					<div class="datasource-container">
+						<!-- <a class="carousel-item" href="#one!"> <span
+							class="title truncate">十里平湖霜满天的的的的</span> <span>by：野渡</span></a> <a
+							class="carousel-item" href="#two!"> <span
+							class="title truncate">淡酒如歌</span> <span>by：流浪</span></a> <a
+							class="carousel-item" href="#three!"> <span
+							class="title truncate">战</span> <span>by：不见东部的太阳</span></a> <a
+							class="carousel-item" href="#four!"> <span
+							class="title truncate">千里夺魂</span> <span>by：地方就开始减肥</span></a> <a
+							class="carousel-item" href="#five!"> <span
+							class="title truncate">上山入睡</span> <span>by：大法</span></a> -->
+						<table class="upload-table centered responsive-table">
+							<thead>
+								<tr>
+									<th data-field="name">帮会</th>
+									<th data-field="area">服务器</th>
+									<th data-field="author">上传者</th>
+									<th data-field="date">上传时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								#foreach($item in $uploads)
+								<tr summary='${item.summaryId}'>
+									<td>${item.gangName}</td>
+									<td>${item.areaName}</td>
+									<td>${item.uploadUserName}</td>
+									<td>${item.uploadTime}</td>
+								</tr>
+								#end
+							</tbody>
+						</table>
+						#if(!$uploads) 暂无 #end
+					</div>
+
+					<div class="button-list">
+						<a class="waves-effect waves-light btn z-depth-3"
+							href="${root}/upload">我要上传</a> <a
+							class="waves-effect waves-light btn z-depth-3 hide">查看</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	</main>
+
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm")
+
+	<script type="text/javascript" src="${root}/js/echarts-template.js"></script>
+	<script type="text/javascript">
+	 $(document).ready(function(){
+	      $('.slider').slider({full_width: true});
+	    });
+		function appendHeroTo(heros, parent) {
+			for (h in heros) {
+				$('<div class="chip brjia-chip teal lighten-4"></div>').text(
+						heros[h]).appendTo(parent);
+			}
+		}
+
+		$(function() {
+			var vs = echarts.init(document.getElementById('chart-vs'),
+					"macarons");
+			var hero = echarts.init(document.getElementById('chart-hero'),
+					"macarons");
+			var player = echarts.init(document.getElementById('chart-player'),
+					"macarons");
+			vs.showLoading();
+			hero.showLoading();
+			player.showLoading();
+			$.getJSON("/qs/round/summary/index", function(res) {
+				vs.hideLoading();
+				if (res.msg) {
+					Materialize.toast(res.msg, 4000);
+					return;
+				}
+
+				var names = [ res.data.primary.gangName,
+						res.data.enemy.gangName ];
+
+				vs_options.title.text = names.join(" vs ");
+				vs_options.legend.data = names;
+				var data = [];
+				data.push({
+					name : names[0],
+					value : summaryToArray(res.data.primary)
+				});
+				data.push({
+					name : names[1],
+					value : summaryToArray(res.data.enemy)
+				});
+				vs_options.series[0].data = data;
+				var maxArray = accumlateInt(maxInArrays(data[0].value,
+						data[1].value), 0.1);
+				vs_options.radar[0].indicator[0].max = maxArray[0];
+				vs_options.radar[0].indicator[1].max = maxArray[1];
+				vs_options.radar[0].indicator[2].max = maxArray[2];
+				vs_options.radar[0].indicator[3].max = maxArray[3];
+				vs_options.radar[0].indicator[4].max = maxArray[4];
+				vs_options.radar[0].indicator[5].max = maxArray[5];
+
+				var data = [];
+				data.push({
+					name : names[0],
+					value : summaryBackToArray(res.data.primary)
+				});
+				data.push({
+					name : names[1],
+					value : summaryBackToArray(res.data.enemy)
+				});
+				vs_options.series[1].data = data;
+				var maxArray = accumlateInt(maxInArrays(data[0].value,
+						data[1].value), 0.2);
+				vs_options.radar[1].indicator[0].max = maxArray[0];
+				vs_options.radar[1].indicator[1].max = maxArray[1];
+				vs_options.radar[1].indicator[2].max = maxArray[2];
+				vs_options.radar[1].indicator[3].max = maxArray[3];
+
+				vs.setOption(vs_options);
+
+				var id = res.data.primary.id;
+				var enemyId = res.data.enemy.id;
+
+				$.getJSON("/qs/round/hero/" + id + '-' + enemyId, function(
+						hero_res) {
+					hero.hideLoading();
+					if (hero_res.msg) {
+						Materialize.toast(hero_res.msg, 4000);
+						return;
+					}
+					hreo_options.legend.data = names;
+					hreo_options.series[0].data = heroToArray(
+							hero_res.data.primary, res.data.primary);
+					hreo_options.series[1].data = heroToArray(
+							hero_res.data.enemy, res.data.enemy);
+					hreo_options.series[0].name = names[0];
+					hreo_options.series[1].name = names[1];
+					hero.setOption(hreo_options);
+					appendHeroTo(hero_res.data.primary.hero,
+							"#hero-intro .hero-info:first");
+					appendHeroTo(hero_res.data.enemy.hero,
+							"#hero-intro .hero-info:last");
+				});
+
+				$.getJSON("/qs/round/listdata/" + id + '-' + enemyId, function(
+						list_res) {
+					player.hideLoading();
+					if (list_res.msg) {
+						Materialize.toast(list_res.msg, 4000);
+						return;
+					}
+					var ready1 = memberDataArray(list_res.data.primary);
+					var ready2 = memberDataArray(list_res.data.enemy);
+					output_options.legend.data = names;
+					output_options.visualMap[0].max = Math.max(
+							ready1.max_killQ, ready2.max_killQ) + 1;
+					//	output_options.xAxis.max=Math.max(ready1.max_bearM,ready2.max_bearM)+10;
+					//	output_options.yAxis.max=Math.max(ready1.max_outputM,ready2.max_outputM)+10;
+					output_options.series[0].data = ready1.data;
+					output_options.series[1].data = ready2.data;
+					output_options.series[0].name = names[0];
+					output_options.series[1].name = names[1];
+					player.setOption(output_options);
+
+					$("#player-intro input").click(function() {
+						if ($('#player-intro input:first')[0].checked) {
+							player.setOption(output_options, true);
+						} else {
+							player.setOption(assist_options, true);
+						}
+					});
+					var ready1 = memberAssistDataArray(list_res.data.primary);
+					var ready2 = memberAssistDataArray(list_res.data.enemy);
+					assist_options.visualMap[0].max = Math.max(
+							ready1.max_cureM, ready2.max_cureM);
+
+					assist_options.legend.data = names;
+					assist_options.series[0].data = ready1.data;
+					assist_options.series[1].data = ready2.data;
+					assist_options.series[0].name = names[0];
+					assist_options.series[1].name = names[1];
+
+				});
+
+			});
+
+			//init datasource table
+			/* var datas = $.getJSON("/qs/round/list/uploads",function(res){
+				
+				$('div.datasource-container tbody').loadTemplate("#datafrom-table-template",res.data);
+			
+			}); */
+
+		});
+	</script>
+</body>
+
+</html>

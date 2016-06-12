@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	<section id="first-section">
+		<div class="container">
+			<div class="row">
+
+				<div class="col s12">
+					<h5>出错了！</h5>
+					<p>$!{exception}</p>
+					<ul class="collapsible popout" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>为什么数据要依靠上传
+							</div>
+							<div class="collapsible-body">
+								<p>由于网络游戏的封闭性质，开发方
+									尚未有开放游戏内部资料的可能。不过对于倩女幽魂2，官方虽然没有开放相关API，却允许把联赛战斗信息保存为本地的txt文件。
+									此文件是别人家的倩女获取精准数据的唯一途径。因此需要个别勤奋的小主将联赛数据保存，并上传给我们。</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>我自己有数据吗
+							</div>
+							<div class="collapsible-body">
+								<p>每一位倩女小主都是有联赛数据的哦，如果您细心观察，在每一次联赛结束时弹出的
+									汇总框上，有一个保存的小图标，如下图所示，点击一下就能获得一份txt文件。</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">place</i>如何定位联赛数据txt文件
+							</div>
+							<div class="collapsible-body">
+								<p>
+									txt文件位于游戏安装目下，请按照以下路径寻找哦！％倩女2安装目录％／res／actile／... <br />示例：
+								</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">whatshot</i>似乎已经有本帮数据了，我还需要再上传吗
+							</div>
+							<div class="collapsible-body">
+								<p>
+									首先原则上，一个帮会需要且仅需要一份数据，没有必要重复上传txt文件。点击这里查询某期数据是否
+									已经被我们收录。注意，每一场联赛对应一个txt文件。 </br>其次，由于目前没有做权限控制，只要有一位小主上传本期数据，那么交战双方帮会的所有人都不需要上传，但强烈建议
+									各自帮会至少有一人上传此文件。
+								</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">whatshot</i>上传后对我有什么好处
+							</div>
+							<div class="collapsible-body">
+								<p>
+									别人家的目标就是为小主服务，让您的联赛数据暴露在强大的图表之下，让您运筹帷幄之中，决胜千里之外。如果没有人愿意上传，
+									就没有别人家了。
+									。反之，上传的数据越来越多，别人家就会越来越强大，就能发掘出更多更准更有趣的信息哦。比如家族数据可能会分散在不同的帮会中，对家族
+									的汇总和分析就需要基于更多txt文件。别人家对小主很是依赖呢，木嘛！ </br>
+									另外，别人家只为乐趣而生，并没有任何盈利性质的计划，当然也无法给予小主物质上的礼物。
+									但是对于成功提供数据的小主，我们会小心的记录，作为后续有限资源的分配依据。一定要支持别人家哦！
+								</p>
+								</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">whatshot</i>家族的数据从哪里来
+							</div>
+							<div class="collapsible-body">
+								<p>在倩女幽魂2中，家族只是一个自发性质的联盟，官方不可能提供任何关于家族的信息。而在别人家的眼里，家族是一个及其重要的
+									团体。别人家会把同属一个家族的成员数据收集在一起并展示，由于家族成员可能的分散性，意味着大部分帮会数据被收录之时，
+									才是家族数据水到渠成之日。</p>
+								</p>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+	</section>
+	
+
+	</main>
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm")
+	
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+
+	</header>
+	<main>
+	<section id="first-section">
+		<div class="container">
+			<div class="row">
+
+				<div class="col s12">
+					<h5>注册</h5>
+					<p></p>
+					<div id="register-div" class="col s12">
+						<form class="col s12" action="${root}/data/register" method="POST">
+							<div class="row  field-row-1">
+								<div class="input-field col s6">
+									<input id="email" type="email" length="40" name="email"
+										class="validate"> <label for="email">用户邮箱</label>
+								</div>
+							</div>
+							<div class="row  field-row">
+								<div class="input-field col s6">
+									<input id="password" type="password" name="pwd" length="32"
+										class="validate"> <label for="password">密码</label>
+								</div>
+							</div>
+							<div class="row  field-row">
+								<div class="input-field col s6">
+									<input id="password2" type="password" length="32"
+										class="validate"> <label for="password2">确认密码</label>
+								</div>
+							</div>
+
+							<div class="row  field-row">
+								<div class="input-field col s6">
+									<select id="area-select" name="areaId">
+										<option value="" disabled selected>选择一项</option> #foreach(
+										$area in $areaList )
+										<option value="${area.id}">${area.name}</option> #end
+									</select> <label>您来自的服务器 <a href="#modal-create-area"
+										class="createArea waves-effect waves-light modal-trigger">新建</a></label>
+								</div>
+								<div class="col s6"></div>
+							</div>
+							<div class="row  field-row">
+								<div class="input-field col s6">
+									<select name="memberId">
+										<option value="" disabled selected>选择一项</option> #foreach(
+										$member in $memberList )
+										<option value="${member.id}">${member.name}</option> #end
+									</select> <label>关联倩女角色</label>
+								</div>
+							</div>
+							<button class="btn waves-effect waves-light" type="submit"
+								name="action">
+								提交 <i class="material-icons right">send</i>
+							</button>
+						</form>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Modal Structure -->
+			<div id="modal-create-area" class="modal">
+				<div class="modal-content">
+					<form>
+						<div class="input-field col m6 s10">
+							<input id="areaName" name="areaName" type="text" class="validate">
+							<label for="areaname">服务器名称</label>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<a href="#!"
+						class=" modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+					<a href="#!"
+						class=" modal-action waves-effect waves-green btn-flat">确认</a>
+				</div>
+			</div>
+	</section>
+
+
+
+	</main>
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm")
+	<script>
+		$(document).ready(function() {
+			$('#register-div a.modal-trigger').leanModal({
+				dismissible: false,
+				opacity:0.3,
+				in_duration: 300,
+				out_duration:400
+				});
+			//计数器初始化
+			$('input#email input:password').characterCounter();
+			var emailHandler =function(){
+				if($(this).val()=="" || $(this).val().indexOf("@")==-1){
+					if(!$(this).hasClass("invalid")){
+						$(this).addClass("invalid");
+					}
+				}else{
+					var self = $(this);
+					$.getJSON("/qs/username/exist",{email:self.val()},function(data){
+						if(data.data===true){
+							Materialize.toast('邮箱已经注册', 2000);
+							if(!self.hasClass("invalid")){
+								self.addClass("invalid");
+							}
+						}else{
+							self.removeClass("invalid").addClass("valid");
+						}
+					})
+				}
+				
+			}
+			
+		//	$('input#email').change(emailHandler);
+			$('input#email').blur(emailHandler);
+			$('#area-select').change(function(){
+				var promt = $("span.caret:first");
+				if($(this).val()==""){
+					promt.css("color","#F44336");
+					promt.next("input").css("color","#F44336");
+				}else{
+					promt.css("color","#4CAF50");
+					promt.next("input").css("color","#4CAF50");
+				}
+				
+			});
+			function checkForm(form){
+				form.find('input#email,input:password').each(function(){
+					 if(!$(this).val()){
+						 $(this).addClass("invalid");
+					 }
+				 });
+				 var sel = form.find("#area-select").eq(0);
+				  if(!sel.val()){
+					 var promt = $("span.caret:first");
+					 promt.css("color","#F44336");
+					 promt.next("input").css("color","#F44336");
+				  }
+			}
+			$("#register-div form").on("submit", function(event) {
+				checkForm($(this));
+				if($(this).find("input.invalid").length>0){
+					event.preventDefault();
+					Materialize.toast('请完成验证', 2000);
+					return;
+				}
+				 var sel = $(this).find("#area-select").eq(0);
+				  if(!sel.val()){
+					 event.preventDefault();
+					 Materialize.toast('请选择服务器', 2000);
+					return;
+				  }
+				
+				var mypwd = $(this).find('input#password').eq(0);
+				var mypwd2 = $(this).find('input#password2').eq(0);
+				if(mypwd.val()!=mypwd2.val()){
+					event.preventDefault();
+					mypwd.addClass("invalid");
+					mypwd2.addClass("invalid");
+					Materialize.toast('输入密码不一致', 2000);
+					return;
+				}
+				
+			});
+
+			$("#modal-create-area a:last").on(
+					"click",
+					function(event) {
+						var areaName = $('#areaName').val();
+						if (areaName == '') {
+							$('#areaName').focus();
+							return;
+						}
+						$('#modal-create-area').closeModal();
+						$.post("/qs/area", {areaName:areaName}, function(data) {
+							
+							if (data.msg) {
+								Materialize.toast(data.msg, 2000)
+							} else {
+								//do request
+								$("#area-select").append('<option value="'+data.data.id+'" selected>'+data.data.name+'</option>');
+								$('select').material_select();
+							}
+
+						});
+
+					});
+
+		});
+	</script>
+</body>
+
+</html>

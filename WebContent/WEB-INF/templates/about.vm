@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+<style>
+#submit-file-div{
+	width :60px;
+	margin: 10px auto;
+}
+</style>
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	<section id="second-section">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5>名词解释</h5>
+					<ul class="collapsible popout" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>声势值
+							</div>
+							<div class="collapsible-body">
+								<p>一个帮会的 输出／ 1000＋治疗／100 ＋ 杀敌数量＋助攻 ／ 8＋战车杀人+维修</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>战斗期次
+							</div>
+							<div class="collapsible-body">
+								<p>包括了哪年，第几周和第几场。一年约有50多周，一周有3场联赛</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>联赛时间
+							</div>
+							<div class="collapsible-body">
+								<p>导出数据的时刻。被人家根据此时刻来推算一场联赛的战斗持续时间</p>
+							</div>
+						</li>
+					</ul>
+					<h5>常见问题</h5>
+					<p></p>
+					<ul class="collapsible popout" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>家族相关
+							</div>
+							<div class="collapsible-body">
+								<p>家族相关操作：家族是一群游戏角色的集合，别人家用户需要关联一个游戏角色后，才能进行家族相关的操作。加入
+								家族后，自己的战斗会和其它家族成员</p>
+								<p>家族创建：目前任何别人家用户都可以创建自己的家族。全服务器范围内家族名称不允许相同。</p>
+								<p>家族删除：一个家族的创建人可以删除自己的家族，其它成员不可以删除家园，只能退出</p>
+								<p>加入家族：目前任何一个角色可以随意加入任意一个家族，但是同一时刻只能属于一个家族。由于家族不区分
+								服务器，因此分属不同服务器的角色可以加入相同家族，这与倩女有所不同。加入新的家族之前必需退出原有家族。</p>
+								<p>退出家族：目前任何一个角色可以随意退出任意一个家族，退出后，原有家族将不再统计该成员战斗数据</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_drama</i>为什么需要上传
+							</div>
+							<div class="collapsible-body">
+								<p>网络游戏很少会主动提供数据给第三方开发者，对于倩女幽魂2，网易虽然没有开放数据接口，却允许把联赛战斗信息保存为本地的txt文件。
+									别人家的所有统计分析都建立在这份文件之上，上传的人数越多，收集的数据越广泛，我们的能力就越大。</p>
+									<p>txt文件获取方式见下图：</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">place</i>如何定位联赛数据txt文件
+							</div>
+							<div class="collapsible-body">
+								<p>
+									txt文件位于游戏安装目下，请按照以下路径寻找哦！％倩女2安装目录％／res／actile／... <br />示例：
+								</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">whatshot</i>家族的数据从哪里来
+							</div>
+							<div class="collapsible-body">
+								<p>在倩女幽魂2中，家族只是一个自发性质的联盟，官方不可能提供任何关于家族的信息。而在别人家的眼里，家族是一个及其重要的
+									团体。别人家会把同属一个家族的成员数据收集在一起并展示，由于家族成员可能的分散性，意味着大部分帮会数据被收录之时，
+									才是家族数据水到渠成之日。</p>
+								</p>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">whatshot</i>了解更多
+							</div>
+							<div class="collapsible-body">
+								<h6>关于导出</h6>
+								<p>
+									倩女幽魂2游戏过程中能够导出的数据，目测有联赛数据、团队信息、聊天消息等。其中联赛数据繁杂而有趣，
+									蕴含了很多值得关注的地方。想把一堆杂乱无章或者平淡无奇的数据变成有趣的事情。这正是别人家大有可为
+									之处。对于团队信息、聊天纪录等其它数据，目前还没有很好的使用方案。
+								</p>
+								<h6>关于联赛数据</h6>
+								<p>
+									这份联赛数据文件，如你打开所见，提供了所有参战成员的输出、杀敌、助攻等战斗指标。有了这些，我们既可以展
+									示帮会力量的构成、优势和劣势，也可以从历史的角度跟踪帮会的发展轨迹。我们可以从一张图
+									中窥探帮会的兴衰成败，也可以从一堆数字中回顾自己的荣辱一生；假如所有服务器所有帮会都参与到别人家，我们就可以轻松地跟踪任何一个角色、一个家族
+									或者任何你随心所欲设定的一个团体，展示它们的力量构成和发展图谱。在此之上，我们还可以定义
+									更合理的衡量指标，完美表示一个角色、一个帮会、一个家族等的真实力量。我们可以打造一份声势榜单，尽享游戏
+									之乐趣。总之，拥有了数据，就拥有一切。
+								</p>
+								<p>
+									稍有遗憾的是，从全服全帮会的角度上看，这份文件所提供的数据略显单薄。参战角色、帮会这些元素仅提供了名称，而没有提供唯一性的标识。
+									很多时候名称并没有什么卵用，站在全局和长久的角度考虑，名称是极易变动而且有重复的风险，非常不利于管理和跟踪。这份文件也没有提供
+									与服务器相关的任何信息，甚至没有提供联赛的敌对帮会、输赢情况。别人家为了打造一款面向全服全帮会全角色的数据太空船，
+									已经不遗余力地扫除大部分障碍，现在就只等待你来参与了。让我们马上开启太空之旅吧，我带着你，你带着txt。
+								</p>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+	</section>
+
+
+	</main>
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm")
+	<script>
+		
+	</script>
+</body>
+
+</html>

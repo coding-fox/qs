@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+#parse("partial/header.vm")
+
+<body>
+	<header>
+		<div class="wall">
+			<div id="df">#parse("partial/nav.vm")</div>
+		</div>
+	</header>
+	<main>
+	<div class="title-info valign-wrapper hoverable">
+		<h5 class="abstr center-align">第${week}周(${dateb}) 第${round}场战况</h5>
+		<span class="abstr">${year}年 别人家倩女</span>
+	</div>
+	<section id="bang-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<div class="slider">
+						<ul class="slides">
+							<li><img src="/qs/images/bound1.png">
+								<!-- random image -->
+								<div class="caption center-align">
+									<h3 class="light pink-text text-light-3">总量对比</h3>
+									<h5 class="light teal-text text-light-3">狭路相逢，谁更胜一筹</h5>
+								</div></li>
+							<li><img src="/qs/images/bound2.png">
+								<!-- random image -->
+								<div class="caption right-align">
+									<h3 class="light pink-text text-light-3">英雄vs帮会</h3>
+									<h5 class="light teal-text text-light-3">你咋不上天</h5>
+								</div></li>
+							<li><img src="/qs/images/bound3.png">
+								<!-- random image -->
+								<div class="caption left-align">
+									<h3 class="light pink-text text-light-3">战斗数据分布</h3>
+									<h5 class="light teal-text text-light-3">这里属于每一个人</h5>
+								</div></li>
+							<!-- <li><img src="/qs/images/bound4.png">
+								random image
+								<div class="caption center-align">
+									<h3 class="light pink-text text-light-3">自由订阅!</h3>
+									<h5 class="light teal-text text-lighten-3">随心所欲，尽在掌握</h5>
+								</div></li> -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</main>
+	#parse("partial/footer.vm")
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.slider').slider({
+				full_width : true,
+				height:450,
+				interval:2000,
+				transition:1000
+			});
+			$('.slider img').on("mouseenter",function(event){
+				$(this).slider('pause');
+			});
+			$('.slider img').on("mouseleave",function(event){
+				$(this).slider('start');
+			});
+			$('.slider img').on("click",function(event){
+				window.location.href="/qs/gang/1";
+			});
+			
+		});
+	</script>
+</body>
+
+</html>

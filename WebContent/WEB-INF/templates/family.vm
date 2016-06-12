@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<style>
+.brjia-chip{
+	margin:5px 0px 0px;
+	background-color:#b2dfdb
+}
+.upload-table >tbody> tr:hover{
+	background-color:#b2dfdb;
+}
+#more-intro .button-list{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+</style>
+
+#parse("partial/header.vm")
+
+<body>
+
+	<header>
+		<div class="wall">#parse("partial/nav.vm")</div>
+	</header>
+	<main>
+	<div class="title-info valign-wrapper hoverable">
+		<h5 class="abstr center-align">第${fmeta.week}周(${fmeta.dateb}) 第${fmeta.round}场战况
+		</h5>
+		<span class="abstr">别人家倩女 ${fmeta.year}</span>
+		#if(${fmeta.familyId})
+		<input type="hidden" id="summary_id_text" value="$!{fmeta.familyId}">
+		#end
+	</div>
+	<section id="bang-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m12">
+					<h5>$!{fmeta.familyName}</h5>
+					家族由$!{fmeta.createUserId}创建于$!{fmeta.createTime}，目前成员人数为
+					$!{fmeta.count}
+				</div>
+				<div class="col s12 m12">
+					<h6>已收录成员</h6>
+					<p>点击<a href="/qs/family/list">这里</a>查看别人的家族</p>
+					<ul>
+					#foreach($item in ${fmeta.members})
+						<li memberId="${item.id}"><div class="chip brjia-chip teal lighten-4">$!{item.name}</div></li>
+					#end
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="hero-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+					<div id="chart-player" class="chart"></div>
+				</div>
+				<div class="col s12 m2">
+					<p>
+						<input name="group1" type="radio" id="test1" checked="checked" />
+						<label for="test1">攻击分布</label>
+					</p>
+					<p>
+						<input name="group1" type="radio" id="test2" /> <label
+							for="test2">辅助分布</label>
+					</p>
+					<div class="index-info"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col m12">
+					<div class="hero-info">
+						<h6>英雄</h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="player-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 m10">
+				</div>
+			</div>
+		</div>
+	</section>
+
+	</main>
+
+	<div class="other-box"></div>
+
+	#parse("partial/footer.vm") 
+	
+	<script type="text/javascript" src="${root}/js/echarts-template.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var player = echarts.init(document.getElementById('chart-player'),"macarons");
+		var fid=$(".title-info input").eq(0).val();
+		setFamilyData(fid,player);
+	});
+	function appendHeroTo(heros, parent) {
+		for (h in heros) {
+			$('<div class="chip brjia-chip teal lighten-4"></div>').text(heros[h])
+					.appendTo(parent);
+		}
+	}
+	function selectHero(heros, parent) {
+		var res=[];
+		for (h in heros) {
+			if(heros[h].hero=="1"){
+				res.push(heros[h].memberName);
+			}
+		}
+		return res;
+	}
+	function setFamilyData(fid,player){
+		player.showLoading();
+		$("#player-intro input").click(function() {
+			if($(this).is("#player-intro input:first")){
+				
+				player.setOption(output_options,true);
+				$("#player-intro .index-info").text("图中气泡越大，代表杀敌人数越多");
+			}else{
+				
+				player.setOption(assist_options,true);
+				$("#player-intro .index-info").text("图中气泡越大，代表治疗量越高");
+			}
+		});
+		
+		$.getJSON("/qs/family/listdata",{fid:fid},function(list_res){
+			player.hideLoading();
+			if(list_res.msg){
+				Materialize.toast(list_res.msg, 4000);
+				return;
+			}
+			//hero name 
+			appendHeroTo(selectHero(list_res.data.primary),"#player-intro .hero-info:first");
+			
+			//output
+			var names =[$("bang-intro h5").text()];
+			var ready1=memberDataArray(list_res.data.primary);
+			output_options.legend.data=names;
+			output_options.visualMap[0].max=ready1.max_killQ+1;
+			output_options.series[0].data=ready1.data;
+			output_options.series[0].name=names[0];
+			
+			output_options.series=output_options.series[0];
+			player.setOption(output_options);
+			
+			//assist
+			var ready1=memberAssistDataArray(list_res.data.primary);
+			assist_options.visualMap[0].max=ready1.max_cureM;
+			
+			assist_options.legend.data=names;
+			assist_options.series[0].data=ready1.data;
+			assist_options.series[0].name=names[0];
+			assist_options.series=assist_options.series[0];
+			
+		});
+	}
+	
+	</script>
+</body>
+
+</html>
